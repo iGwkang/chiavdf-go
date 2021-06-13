@@ -29,7 +29,7 @@ func CreateDiscriminant(challenge_hash []byte, discriminant_size_bits uint64) st
 		len:  C.int(len(challenge_hash)),
 	}
 	cs := C.CreateDiscriminantWrapper(cb, C.uint64_t(discriminant_size_bits))
-
+	defer C.free(unsafe.Pointer(cs))
 	return C.GoString(cs)
 }
 
