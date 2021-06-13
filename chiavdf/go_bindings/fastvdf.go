@@ -10,9 +10,9 @@ package go_bindings
  ********************************************************/
 
 /*
-#cgo CFLAGS: -I.. -std=c11
+#cgo CFLAGS: -I..
 #cgo CXXFLAGS: -I.. -std=c++14
-#cgo LDFLAGS: -L${SRCDIR} -lstdc++ -lgmp -lchiavdf
+#cgo LDFLAGS: -L${SRCDIR} -lstdc++ -lchiavdf -lgmp
 #include <stdlib.h>
 #include "fastvdf.h"
 */
