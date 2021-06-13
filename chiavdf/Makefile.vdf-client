@@ -1,0 +1,53 @@
+UNAME := $(shell uname)
+
+ifneq (,$(findstring clang, $(shell $(CXX) --version)))
+NOPIE = -fno-PIE
+else
+NOPIE = -no-pie
+endif
+
+LDFLAGS += -flto $(NOPIE)
+LDLIBS += -lgmpxx -lgmp -lboost_system -pthread
+CXXFLAGS += -flto -std=c++1z -D VDF_MODE=0 -D FAST_MACHINE=1 -pthread $(NOPIE) -fvisibility=hidden
+ifeq ($(UNAME),Darwin)
+CXXFLAGS += -D CHIAOSX=1
+endif
+
+OPT_CFLAGS = -O3
+
+ifneq ($(ASAN),)
+LDFLAGS += -fsanitize=address -fsanitize=undefined
+CXXFLAGS += -g -fsanitize=address -fsanitize=undefined -fsanitize-undefined-trap-on-error
+endif
+
+ifneq ($(TSAN),)
+LDFLAGS += -fsanitize=thread
+CXXFLAGS += -g -fsanitize=thread
+endif
+
+.PHONY: all clean
+
+all: vdf_client prover_test 1weso_test 2weso_test vdf_bench
+
+clean:
+	rm -f *.o vdf_client prover_test 1weso_test 2weso_test compile_asm vdf_bench
+
+vdf_client vdf_bench prover_test 1weso_test 2weso_test avx512_test: %: %.o lzcnt.o asm_compiled.o avx2_asm_compiled.o avx512_asm_compiled.o
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+vdf_client.o vdf_bench.o prover_test.o 1weso_test.o 2weso_test.o avx512_test.o: CXXFLAGS += $(OPT_CFLAGS)
+
+lzcnt.o: refcode/lzcnt.c
+	$(CC) -c refcode/lzcnt.c
+
+asm_compiled.s: compile_asm
+	./compile_asm
+
+avx2_asm_compiled.s: compile_asm
+	./compile_asm avx2
+
+avx512_asm_compiled.s: compile_asm
+	./compile_asm avx512
+
+compile_asm: compile_asm.o
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
