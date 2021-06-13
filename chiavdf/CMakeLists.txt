@@ -24,16 +24,9 @@ include_directories(
   ${GMPXX_INCLUDE_DIR}
 )
 
-#aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} chiavdf_src)
-#aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/uint128_t chiavdf_src)
-
 set (LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/go_bindings)
 
 add_library(chiavdf STATIC
- # ${CMAKE_CURRENT_SOURCE_DIR}/python_bindings/fastvdf.cpp
- ${chiavdf_src}
 ${CMAKE_CURRENT_SOURCE_DIR}/go_bindings/fastvdf.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/refcode/lzcnt.c
 )
-
-#target_link_libraries(chiavdf ${GMP_LIBRARIES} ${GMPXX_LIBRARIES} -pthread)
