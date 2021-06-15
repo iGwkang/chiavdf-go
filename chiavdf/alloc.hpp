@@ -6,7 +6,7 @@
 inline void* mp_alloc_func(size_t new_bytes)
 {
     new_bytes = ((new_bytes + 8) + 15) & ~15;
-#if defined _MSC_VER
+#if _WIN32
     uint8_t* ret = static_cast<uint8_t*>(_aligned_malloc(new_bytes, 16));
 #else
     void* ptr = nullptr;
@@ -20,7 +20,7 @@ inline void mp_free_func(void* old_ptr, size_t) {
     // if the old_ptr alignment is not to 16 bytes + 8 bytes offset, we did not
     // allocate it. It's an in-place buffer and should not be freed
     if ((std::uintptr_t(old_ptr) & 15) == 8) {
-#if defined _MSC_VER
+#if _WIN32
         _aligned_free(static_cast<uint8_t*>(old_ptr) - 8);
 #else
         std::free(static_cast<uint8_t*>(old_ptr) - 8);
