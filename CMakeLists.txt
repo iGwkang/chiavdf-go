@@ -6,7 +6,7 @@ add_subdirectory(./chiavdf)
 
 add_custom_target(${PROJECT_NAME}
 # 编译C/C++
-COMMAND cmake --build . -- -j4
+COMMAND cmake --build .
 # 编译go
 COMMAND go build ${CMAKE_CURRENT_SOURCE_DIR}
 )

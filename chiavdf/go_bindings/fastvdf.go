@@ -12,7 +12,8 @@ package go_bindings
 /*
 #cgo CFLAGS: -I..
 #cgo CXXFLAGS: -I.. -std=c++14
-#cgo LDFLAGS: -L${SRCDIR} -lstdc++ -lchiavdf -lgmp
+#cgo !windows LDFLAGS: -L${SRCDIR} -lstdc++ -lchiavdf -lgmp
+//#cgo windows LDFLAGS: -L${SRCDIR} -L${SRCDIR}/Release -LC:/msys64/usr/lib -lstdc++ -lchiavdf -lgmp
 #include <stdlib.h>
 #include "fastvdf.h"
 */

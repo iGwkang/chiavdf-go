@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
-	chiavdf "github.com/GwkangZzz/chiavdf-go/chiavdf/go_bindings"
+	chiavdf "github.com/iGwkang/chiavdf-go/chiavdf/go_bindings"
 	"log"
 	"time"
 )
